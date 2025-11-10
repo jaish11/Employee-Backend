@@ -50,7 +50,7 @@ Employee-Backend/
 │ │ └─ dashboard.routes.js
 │ ├─ utils/
 │ │ ├─ responseWrapper.js
-│ │ 
+│ │
 │ └─ server.js
 ├─ .env
 ├─ package.json
@@ -62,7 +62,7 @@ Employee-Backend/
 
 ### 1️⃣ Clone the Repository
 
-```bash
+````bash
 git clone URL
 cd directory_name
 
@@ -72,8 +72,9 @@ npm install
 
 Create a .env file in the root with:
 PORT=4000
-MONGO_URI=mongodb://localhost:27017/ems_db
-JWT_SECRET=replace_with_a_secret
+MONGO_URI=mongodburl
+ACCESS_TOKEN_KEY=accesstoken
+REFRESH_TOKEN_KEY=refreshtoken
 UPLOAD_DIR=uploads
 
 4️⃣ Run the Server
@@ -82,6 +83,29 @@ node src/server.js
 
 Server will start at:
 👉 http://localhost:4000
+
+---
+
+## 🔐 Authentication & Authorization (Updated)
+
+This backend implements **JWT-based authentication** with **role-based access control (RBAC)**.
+Each user logs in to receive an access token, which must be included in every API request.
+
+### 🔑 Roles
+| Role | Permissions |
+|------|--------------|
+| **SuperAdmin** | Full access to all modules (Dashboard, Employees, Applicants, Departments, Documents) |
+| **HR** | Can view, add, and edit records (Employees, Applicants, Documents) but cannot delete or modify restricted modules |
+
+### 🧱 Authentication Flow
+| Action | Endpoint | Method | Description |
+|---------|-----------|---------|-------------|
+| **Signup** | `/api/auth/signup` | `POST` | Register a new user (defaults to `HR` role) |
+| **Login** | `/api/auth/login` | `POST` | Login with credentials and receive JWT access token |
+| **Refresh Token** | `/api/auth/refresh` | `GET` | Regenerate access token using HTTP-only cookie refresh token |
+
+
+
 
 📡 API Endpoints
 🧠 Authentication Module
@@ -190,4 +214,4 @@ this.http.get(`${environment.apiUrl}/dashboard/summary`).subscribe(data => {
 
 This project is for educational and recruitment purposes only.
 Feel free to modify and extend as needed.
-```
+````
